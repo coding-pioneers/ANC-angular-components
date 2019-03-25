@@ -13,14 +13,15 @@ import {
 } from '@ngx-translate/core';
 
 
+
 @Component({
     selector: 'cp-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-    minDate = new Date(2019,2,8);
-    maxDate = new Date (2019,8,18);
+    minDate = new Date(2008, 2, 8);
+    maxDate = new Date(2022, 8, 18);
 
     constructor(private service: AppService,
                 private calendarService: DatepickerService,
