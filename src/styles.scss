@@ -1,0 +1,11 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Bulma */
+@import '~bulma/bulma';
+
+/* Bulma-Extensions */
+@import "./node_modules/bulma-extensions/bulma-calendar/dist/bulma-calendar";
+
+/* Own global styles */
+
+@import './scss/_all.scss';

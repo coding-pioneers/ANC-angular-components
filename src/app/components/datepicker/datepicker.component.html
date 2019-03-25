@@ -1,0 +1,131 @@
+<div class="field has-addons">
+    <div class="control">
+        <input class="input " type="text" [value]="dateSettings.selectedDate | cpDate" (click)="onToggleCalendar()">
+    </div>
+
+    <div class="control">
+        <button class="button is-primary" (click)="onToggleCalendar()">
+            <span class="icon is-small">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+            </span>
+        </button>
+    </div>
+</div>
+<div class="field">
+    <div class="datepicker" [ngClass]="{'is-active' : showCalendar}">
+        <div class="calendar">
+            <div class="calendar-nav">
+                <ng-container *ngIf="seperatedControls; then seperatedControls else combinedControl"></ng-container>
+                <ng-template #seperatedControls>
+                    <div class="calendar-nav-previous-month">
+                        <button class="button is-text" (click)="onPrevMonth()" [disabled]="mustBlock.prevMonth">
+                            <i class="fa fa-chevron-left"></i>
+                        </button>
+                    </div>
+                    <div>{{ languageData.DATA[language].months[monthData.isMonth] }}</div>
+                    <div class="calendar-nav-next-month">
+                        <button class="button is-text" (click)="onNextMonth()" [disabled]="mustBlock.nextMonth">
+                            <i class="fa fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="calendar-date">
+                        <button class="date-item" (click)="onToday()">
+                            <i class="fa  fa-refresh" aria-hidden="true"></i>
+
+                        </button>
+                    </div>
+                    <div class="calendar-nav-previous-month">
+                        <button class="button is-text" (click)="onPrevYear()" [disabled]="mustBlock.prevYear">
+                            <i class="fa fa-chevron-left"></i>
+                        </button>
+                    </div>
+                    <div>{{ monthData.isYear}}</div>
+                    <div class="calendar-nav-next-month">
+                        <button class="button is-text" (click)="onNextYear()" [disabled]="mustBlock.nextYear">
+                            <i class="fa fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </ng-template>
+                <ng-template #combinedControl>
+                    <div class="calendar-nav-previous-month">
+                        <button class="button is-text" (click)="onPrevMonth()" [disabled]="mustBlock.prevMonth">
+                            <i class="fa fa-chevron-left"></i>
+                        </button>
+                    </div>
+                    <div>{{ languageData.DATA[language].months[monthData.isMonth] }} {{ monthData.isYear}}</div>
+                    <div class="calendar-nav-next-month">
+                        <button class="button is-text" (click)="onNextMonth()" [disabled]="mustBlock.nextMonth">
+                            <i class="fa fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </ng-template>
+            </div>
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <ng-container [ngSwitch]="languageData.DATA[language].weekStart">
+                        <ng-container *ngSwitchCase="0">
+                            <div class="calendar-date"
+                                 *ngFor="let weekday of languageData.DATA[language].weekdaysShort, index as i">
+                                {{ weekday }}
+                            </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="1">
+                            <ng-container
+                                    *ngFor="let weekday of languageData.DATA[language].weekdaysShort; index as i ">
+                                <div class="calendar-date" *ngIf="i != 0"> {{ weekday }}</div>
+                            </ng-container>
+                            <div class="calendar-date"> {{ languageData.DATA[language].weekdaysShort[0] }}
+                            </div>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="2">
+                            <ng-container
+                                    *ngFor="let weekday of languageData.DATA[language].weekdaysShort; index as i ">
+                                <div class="calendar-date" *ngIf="i > 1">
+                                    {{ weekday }}
+                                </div>
+                            </ng-container>
+                            <div class="calendar-date"> {{ languageData.DATA[language].weekdaysShort[0] }}</div>
+                            <div class="calendar-date"> {{ languageData.DATA[language].weekdaysShort[1] }}</div>
+                        </ng-container>
+                    </ng-container>
+                </div>
+                <div class="calendar-body">
+                    <ng-container>
+                        <!--Prev Month-->
+                        <ng-container *ngFor="let day of monthData.daysBefore ">
+                            <div class="calendar-date"
+                                 [ngClass]=" {'is-disabled': isDisabled(day, monthData.isMonth - 1 )}">
+
+                                <button class="date-item" (click)="onDateClick(day)">
+                                    {{ day }}
+                                </button>
+                            </div>
+                        </ng-container>
+                        <!--actual Month-->
+                        <ng-container *ngFor="let day of monthData.days , index as i">
+                            <div class="calendar-date "
+                                 [ngClass]="{'is-disabled' : isDisabled(day,  monthData.isMonth)}">
+                                <button class="date-item"
+                                        [ngClass]="{ 'is-today':  isToday(day), 'is-active': isActive(day) }"
+                                        (click)="onDateClick(day) ">
+                                    {{day}}
+                                </button>
+                            </div>
+                        </ng-container>
+                        <!--Next Month -->
+                        <div class="calendar-date" *ngFor="let day of monthData.daysAfter"
+                             [ngClass]="{'is-disabled' : isDisabled(day, monthData.isMonth + 1)}">
+                            <ng-container>
+                                <button class="date-item" (click)="onDateClick(day)">
+                                    {{ day }}
+                                </button>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

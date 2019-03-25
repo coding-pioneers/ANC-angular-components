@@ -1,0 +1,45 @@
+<nav class="pagination {{position}} {{size}} " [ngClass]="{'is-rounded': rounded}"
+     role="navigation"
+     aria-label="pagination">
+
+    <ng-container *ngIf="hasSkipButtons">
+        <a class="button pagination-previous" [attr.disabled]="isPrevButtonDisabled ? true : null"
+           *ngFor="let skipStep of skipSteps"
+           (click)="onSkipPreviousButton(skipStep)">{{previousSkipButtonText}} {{skipStep}}</a>
+    </ng-container>
+
+    <a class="button pagination-previous" [attr.disabled]="isPrevButtonDisabled? true : null"
+       (click)="onPreviousButton()">{{previousButtonText}}</a>
+    <a class="button pagination-next" [attr.disabled]="isNextButtonDisabled? true : null" (click)="onNextButton()">
+        {{nextButtonText}}
+    </a>
+
+    <ng-container *ngIf="hasSkipButtons">
+        <a class="button pagination-next"
+           [attr.disabled]="(isNextButtonDisabled || (currentPage + skipStep) > blockedPage)  ? true : null"
+           *ngFor="let skipStep of skipSteps" (click)="onSkipNextButton(skipStep)">
+
+            {{skipStep}} {{nextSkipButtonText}}</a>
+    </ng-container>
+
+    <ul class="pagination-list">
+        <ng-container *ngFor="let page of pages | CpIterable; index as i; first as isFirst; last as isLast">
+            <li *ngIf="isLast && (pages - (rangeEnd+1) > 1)">
+                <span class="pagination-ellipsis">
+                    <i class="fas fa-ellipsis-h"></i>
+                </span>
+            </li>
+
+            <li>
+                <a class="button pagination-link" [ngClass]="{'is-current': i == currentPage}"
+                   *ngIf="(isFirst || isLast) || (i >= rangeStart && rangeEnd >= i)"
+                   (click)="onPageSelect(i)">{{i+1}}</a>
+            </li>
+            <li *ngIf="isFirst && currentPage > this.range - step ">
+                <span class="pagination-ellipsis">
+                    <i class="fas fa-ellipsis-h"></i>
+                </span>
+            </li>
+        </ng-container>
+    </ul>
+</nav>
