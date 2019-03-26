@@ -6,7 +6,7 @@ import {DatepickerLanguage} from './datepicker-language';
 // import Date from ''
 
 @Component({
-    selector: 'cp-datepicker',
+    selector: 'app-datepicker',
     templateUrl: './datepicker.component.html',
     styleUrls: ['./datepicker.component.scss'],
     providers: [DatepickerLanguage, NgSwitch]
@@ -15,7 +15,7 @@ import {DatepickerLanguage} from './datepicker-language';
 
 export class DatePickerComponent implements OnInit {
 
-    public language = 'de';
+
 
     dateSettings: {
         startDate: Date,
@@ -65,10 +65,10 @@ export class DatePickerComponent implements OnInit {
     @Input() maxDate: Date | string;
     @Input() minDate: Date | string;
     @Input() datepickerId: string;
-    @Input() seperatedControlls = false;
+    @Input() seperatedControls = false;
+    @Input() language = 'de';
 
-
-    @Output() emitSelectedDate: EventEmitter<object> = new EventEmitter;
+    @Output() selectedDate: EventEmitter<object> = new EventEmitter;
 
     constructor(public languageData: DatepickerLanguage,
                 private datepickerService: DatepickerService) {
@@ -79,6 +79,8 @@ export class DatePickerComponent implements OnInit {
         this.checkInputData();
         this.emitAndRefresh();
         this.checkBlocking(this.dateSettings.startDate);
+        this.onToggleCalendar();
+        console.log(this.seperatedControls);
     }
 
     /**
@@ -267,7 +269,7 @@ export class DatePickerComponent implements OnInit {
     }
 
     private emitAndRefresh(): void {
-        this.emitSelectedDate.emit(this.dateSettings.selectedDate);
+        this.selectedDate.emit(this.dateSettings.selectedDate);
         this.getMonthData(this.dateSettings.selectedDate);
         this.onToggleCalendar();
     }

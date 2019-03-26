@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 @Component({
-    selector: 'cp-pagination',
+    selector: 'app-pagination',
     templateUrl: './pagination.component.html',
     styleUrls: ['./pagination.component.scss']
 })
@@ -30,7 +30,7 @@ export class PaginationComponent implements OnInit {
 
     /**
      * indicates the number of pages to be viewed
-     * has to be an odd number otherwise the next odd number will be set as range size
+     * has to be an odd number otherwise the next bigger odd number will be set as range size
      */
     @Input() range = 3;
 
@@ -97,7 +97,7 @@ export class PaginationComponent implements OnInit {
 
     /**
      * will increment the currentPage by the given value , stops at pages-1
-     * @param value : clicked button value
+     * @param value :  button value
      */
     public onSkipNextButton(value: number): void {
         this.currentPage += value;
@@ -107,7 +107,7 @@ export class PaginationComponent implements OnInit {
 
     /**
      * will decrement the currentPage by , stops at 0
-     * @param value : clicked button value
+     * @param value :  button value
      */
     public onSkipPreviousButton(value: number): void {
         this.currentPage -= value;

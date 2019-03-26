@@ -15,8 +15,8 @@
     <div class="datepicker" [ngClass]="{'is-active' : showCalendar}">
         <div class="calendar">
             <div class="calendar-nav">
-                <ng-container *ngIf="seperatedControls; then seperatedControls else combinedControl"></ng-container>
-                <ng-template #seperatedControls>
+                <ng-container *ngIf="seperatedControls; then hasYearButtons else combinedControl"></ng-container>
+                <ng-template #hasYearButtons>
                     <div class="calendar-nav-previous-month">
                         <button class="button is-text" (click)="onPrevMonth()" [disabled]="mustBlock.prevMonth">
                             <i class="fa fa-chevron-left"></i>
@@ -30,7 +30,7 @@
                     </div>
                     <div class="calendar-date">
                         <button class="date-item" (click)="onToday()">
-                            <i class="fa  fa-refresh" aria-hidden="true"></i>
+                            <i class="fa  fa-chevron-up" style="fill: chocolate" aria-hidden="true"></i>
 
                         </button>
                     </div>
