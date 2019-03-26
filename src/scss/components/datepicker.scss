@@ -1,71 +1,51 @@
 .datepicker.is-active {
-    display: flex;
-    .calendar {
-        box-shadow: 5px 5px 2em 5px silver;
-        position: absolute;
-        z-index: 40;
-        margin: 20px;
-        left: 0;
-        max-height: calc(100vh - 40px);
-        .calendar-header {
-            background: $grey-lighter;
-            .calendar-date {
-                color: $grey-darker;
-            }
-        }
-        @include mobile {
-            margin: 0 auto;
-        }
-        @include tablet {
-            margin: 0 auto;
-        }
+  display: flex;
+  .calendar {
+    box-shadow: 5px 5px 2em 5px silver;
+    position: absolute;
+    z-index: 40;
+    margin: 20px;
+    left: 0;
+    max-height: calc(100vh - 40px);
+    .calendar-header {
+      background: $grey-lighter;
+      .calendar-date {
+        color: $grey-darker;
+      }
     }
-    .calendar-nav {
-        flex-direction: row;
-        .calendar-nav-previous-month,
-        .calendar-nav-next-month {
-            .button {
-                color: $white;
-            }
-            .button:hover,
-            .button:active,
-            .button:focus {
-                color: $grey-darker;
-            }
-            .button.is-text {
-                text-decoration: none;
-            }
-        }
+    @include mobile {
+      margin: 0 auto;
     }
+    @include tablet {
+      margin: 0 auto;
+    }
+  }
+  .calendar-nav {
+    flex-direction: row;
+    .calendar-nav-previous-month,
+    .calendar-nav-next-month {
+      .button {
+        color: $white;
+      }
+      .button:hover,
+      .button:active,
+      .button:focus {
+        color: $grey-darker;
+      }
+      .button.is-text {
+        text-decoration: none;
+      }
+    }
+    .calendar-date {
+      .date-item {
+        color: white;
+        &:hover {
+          color: black;
+        }
+      }
+    }
+  ;
+  }
 }
 
-.calendar-date.calendar-range {
-    @each $name,
-    $pair in $colors {
-        $color: nth($pair, 1);
-        $color-invert: nth($pair, 2);
-        &.is-#{$name} {
-            &::before {
-                background: $color;
-                filter: opacity(0.5);
-            }
-            .date-item {
-                color: $color;
-            }
-        }
-        &.calendar-range-start,
-        &.calendar-range-end {
-            .date-item.is-active {
-                @each $name,
-                $pair in $colors {
-                    $color: nth($pair, 1);
-                    $color-invert: nth($pair, 2);
-                    &.is-#{$name} {
-                        background: $color;
-                        border-color: $color;
-                    }
-                }
-            }
-        }
-    }
-}
+

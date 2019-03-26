@@ -2,16 +2,19 @@
     <div class="container">
         <div class="columns">
             <div class="column">
-                <div>
-                    <cp-pagination [data]="70" [position]="" [size]="'is-small'" [rounded]="true"
-                                   [hasSkipButtons]="true"></cp-pagination>
 
+                <div style=" width:600px; margin-bottom: 1rem;">
+                <app-pagination [data]="70" [hasSkipButtons]="false" [range]="9" ></app-pagination>
                 </div>
-                <cp-datepicker [maxDate]="maxDate" [minDate]="minDate" ></cp-datepicker>
+
+
+
+
+            </div>
+            <div class="column">
 
             </div>
         </div>
-
     </div>
 </section>
 

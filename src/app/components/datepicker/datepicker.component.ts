@@ -3,8 +3,10 @@ import {NgSwitch} from '@angular/common';
 import {DatepickerService} from './datepicker.service';
 import {DatepickerLanguage} from './datepicker-language';
 
+// import Date from ''
+
 @Component({
-    selector: 'cp-datepicker',
+    selector: 'app-datepicker',
     templateUrl: './datepicker.component.html',
     styleUrls: ['./datepicker.component.scss'],
     providers: [DatepickerLanguage, NgSwitch]
@@ -13,7 +15,7 @@ import {DatepickerLanguage} from './datepicker-language';
 
 export class DatePickerComponent implements OnInit {
 
-    public language = 'de';
+
 
     dateSettings: {
         startDate: Date,
@@ -23,8 +25,8 @@ export class DatePickerComponent implements OnInit {
         today: Date
     } = {
         startDate: new Date(),
-        minDate: new Date(),
-        maxDate: new Date(),
+        minDate: new Date(1,1 ,1),
+        maxDate: new Date(3000, 1, 1),
         selectedDate: new Date(),
         today: new Date()
     };
@@ -63,10 +65,10 @@ export class DatePickerComponent implements OnInit {
     @Input() maxDate: Date | string;
     @Input() minDate: Date | string;
     @Input() datepickerId: string;
-    @Input() seperatedControlls = false;
+    @Input() seperatedControls = false;
+    @Input() language = 'de';
 
-
-    @Output() emitSelectedDate: EventEmitter<object> = new EventEmitter;
+    @Output() selectedDate: EventEmitter<object> = new EventEmitter;
 
     constructor(public languageData: DatepickerLanguage,
                 private datepickerService: DatepickerService) {
@@ -77,6 +79,8 @@ export class DatePickerComponent implements OnInit {
         this.checkInputData();
         this.emitAndRefresh();
         this.checkBlocking(this.dateSettings.startDate);
+        this.onToggleCalendar();
+        console.log(this.seperatedControls);
     }
 
     /**
@@ -229,13 +233,24 @@ export class DatePickerComponent implements OnInit {
     }
 
     public onPrevYear(): void {
-        this.monthData.isYear += 1;
-        this.getMonthData(new Date(this.monthData.isYear, this.monthData.isMonth, this.monthData.isDay));
+        if (this.monthData.isYear > this.dateSettings.minDate.getFullYear() ||
+            this.dateSettings.minDate.getFullYear() === undefined) {
+
+            this.monthData.isYear -= 1;
+            this.getMonthData(new Date(this.monthData.isYear, this.monthData.isMonth, this.monthData.isDay));
+            this.checkBlocking(this.monthData.first)
+        }
+
     }
 
     public onNextYear(): void {
-        this.monthData.isYear += 1;
-        this.getMonthData(new Date(this.monthData.isYear, this.monthData.isMonth, this.monthData.isDay));
+        console.log(this.dateSettings.maxDate.getFullYear());
+        if (this.monthData.isYear < this.dateSettings.maxDate.getFullYear()
+            || this.dateSettings.maxDate.getFullYear() === undefined) {
+            this.monthData.isYear += 1;
+            this.getMonthData(new Date(this.monthData.isYear, this.monthData.isMonth, this.monthData.isDay));
+            this.checkBlocking(this.monthData.first)
+        }
     }
 
     /**
@@ -254,7 +269,7 @@ export class DatePickerComponent implements OnInit {
     }
 
     private emitAndRefresh(): void {
-        this.emitSelectedDate.emit(this.dateSettings.selectedDate);
+        this.selectedDate.emit(this.dateSettings.selectedDate);
         this.getMonthData(this.dateSettings.selectedDate);
         this.onToggleCalendar();
     }
@@ -336,10 +351,16 @@ export class DatePickerComponent implements OnInit {
         let month = date.getMonth();
         let year = date.getFullYear();
 
-        this.mustBlock.prevMonth = (this.dateSettings.minDate.getMonth() >= month);
-        this.mustBlock.nextMonth = (month >= this.dateSettings.maxDate.getMonth());
-        this.mustBlock.prevYear = (this.dateSettings.minDate.getFullYear() >= date.getFullYear());
-        this.mustBlock.nextYear = (year >= this.dateSettings.maxDate.getFullYear());
+        console.log(this.dateSettings);
+        if (this.dateSettings.minDate !== undefined) {
+            this.mustBlock.prevMonth = (this.dateSettings.minDate.getMonth() >= month);
+            this.mustBlock.prevYear = (this.dateSettings.minDate.getFullYear() >= date.getFullYear());
+        }
+
+        if (this.dateSettings.maxDate !== undefined) {
+            this.mustBlock.nextMonth = (month >= this.dateSettings.maxDate.getMonth());
+            this.mustBlock.nextYear = (year >= this.dateSettings.maxDate.getFullYear());
+        }
 
 
         console.log(this.mustBlock);
